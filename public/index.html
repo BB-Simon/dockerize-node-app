@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="index.css" />
+  </head>
+  <body>
+    <section class="container">
+      <h1 class="title">This sk user management system</h1>
+      <p class="description">
+        A dumy logn description will be placed here later, but now do not have enugh context about
+        the management application
+      </p>
+
+      <form class="user-form" action="/api/v1/users" target="_blank" method="POST">
+        <input type="text" name="username" placeholder="username" />
+        <input type="text" name="email" placeholder="email" />
+        <input type="submit" value="Add user" />
+      </form>
+
+      <div>
+        <h2>Users</h2>
+        <ul id="users"></ul>
+      </div>
+    </section>
+
+    <script>
+      async function loadUsers() {
+        const res = await fetch("/api/v1/users");
+        const data = await res.json();
+
+        const usersList = document.getElementById("users");
+        usersList.innerHTML = "";
+        const loadingMessage = document.createElement("p");
+        loadingMessage.innerText = "Loading users...";
+        usersList.appendChild(loadingMessage);
+
+        data.data.forEach((user) => {
+          const li = document.createElement("li");
+          li.innerText = `User: ${user.username}, Email: ${user.email}`;
+          setTimeout(() => {
+            usersList.appendChild(li);
+          }, 1000);
+        });
+
+        setTimeout(() => {
+          usersList.removeChild(usersList.firstChild);
+        }, 1100);
+      }
+
+      loadUsers();
+    </script>
+  </body>
+</html>
